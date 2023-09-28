@@ -1,0 +1,86 @@
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
+    group 'xyz.wirklich'
+    version '1.0'
+
+    repositories {
+        mavenCentral()
+    }
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+        testImplementation 'org.hamcrest:hamcrest:2.2'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+
+                from components.java
+
+                pom {
+                    name = 'Astronomical Calculations'
+                    description = 'Algorithms for astronomical time and geometry calculations. '
+                    url = 'https://github.com/wirklich-xyz/wirklich.xyz.astro'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'ralfulrich'
+                            name = 'Ralf Ulrich'
+                            email = 'ralf.m.ulrich@gmail.com'
+                        }
+                    }
+                    scm {
+                        connection = 'git@github.com:wirklich-xyz/wirklich.xyz.astro.git'
+                        url = 'https://github.com/wirklich-xyz/wirklich.xyz.astro'
+                    }
+                }
+
+            }
+        }
+        repositories {
+            maven {
+                url = "$buildDir/myrepo"
+            }
+        }
+    }
+
+    jar {
+        manifest.attributes provider: 'gradle'
+    }
+
+
+    signing {
+        def signingKeyId = findProperty("signingKeyId")
+        def signingKey = findProperty("signingKey")
+        def signingPassword = findProperty("signingPassword")
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+        sign publishing.publications.mavenJava
+    }
+
+
+    javadoc {
+        if (JavaVersion.current().isJava9Compatible()) {
+            options.addBooleanOption('html5', true)
+        }
+    }
+}
