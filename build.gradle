@@ -13,8 +13,8 @@ allprojects {
     apply plugin: 'signing'
 
     group 'xyz.wirklich.astro'
-    version pom_version
-    println "pom version: " + pom_version
+    version "${pom_version}"
+    println "pom version: ${pom_version}"
 
     repositories {
         mavenCentral()
@@ -43,7 +43,6 @@ allprojects {
 
                 pom {
                     name = 'Astronomical Calculations'
-                    version = '$System.env.ossrhUsername'
                     description = 'Algorithms for astronomical time and geometry calculations. '
                     url = 'https://github.com/wirklich-xyz/wirklich.xyz.astro'
                     licenses {
