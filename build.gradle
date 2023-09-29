@@ -1,3 +1,11 @@
+String pom_version = '0.0.1-dev'
+if (null != System.getenv('XYZ_WIRKLICH_ASTRO_GITTAG')) {
+    pom_version = System.getenv('XYZ_WIRKLICH_ASTRO_GITTAG').trim().replaceFirst("^v", '')
+    if (!(pom_version ==~ /\d+\.\d+\.\d+.*/ )) {
+        throw new InvalidUserDataException('ERROR: wrong format for git-tag. Must be [v]x.y.z...')
+    }
+}
+
 allprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
@@ -5,7 +13,8 @@ allprojects {
     apply plugin: 'signing'
 
     group 'xyz.wirklich.astro'
-    version '1.0.0'
+    version pom_version
+    println "pom version: " + pom_version
 
     repositories {
         mavenCentral()
@@ -34,6 +43,7 @@ allprojects {
 
                 pom {
                     name = 'Astronomical Calculations'
+                    version = '$System.env.ossrhUsername'
                     description = 'Algorithms for astronomical time and geometry calculations. '
                     url = 'https://github.com/wirklich-xyz/wirklich.xyz.astro'
                     licenses {
