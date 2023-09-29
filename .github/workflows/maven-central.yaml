@@ -20,8 +20,8 @@ jobs:
         with:
           arguments: publish
         env:
-          ossrhUsername: ${{ secrets.OSSRH_USERNAME }}
-          ossrhPassword: ${{ secrets.OSSRH_TOKEN }}
-          ORG_GRADLE_PROJECT_signingKeyId: ${{ secrets PGP_signingKeyId }}
-          ORG_GRADLE_PROJECT_signingKey:  ${{ secrets PGP_signingKey }}
-          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets PGP_signingPassword }}
+          ossrhUsername: ${{ secrets.OSSRHUSERNAME }}
+          ossrhPassword: ${{ secrets.OSSRHPASSWORD }}
+          ORG_GRADLE_PROJECT_signingKeyId: ${{ secrets ORG_GRADLE_PROJECT_SIGNINGKEYID }}
+          ORG_GRADLE_PROJECT_signingKey:  ${{ secrets ORG_GRADLE_PROJECT_SIGNINGKEY_P1 }}${{ secrets ORG_GRADLE_PROJECT_SIGNINGKEY_P2 }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets ORG_GRADLE_PROJECT_SIGNINGPASSWORD }}
