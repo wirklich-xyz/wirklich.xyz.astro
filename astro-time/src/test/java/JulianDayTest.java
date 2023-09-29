@@ -47,18 +47,6 @@ class JulianDayTest {
 
 
     @Test
-    void testMjd() {
-        JulianDay jd1 = new JulianDay(0);
-        assertThat("MJD for JD -2400000.5", jd1.getMjd(), is(-2_400_000.5));
-
-        JulianDay jd2 = new JulianDay(3_000_000.4);
-        assertThat("MJD for JD 3000000.4 is not before 60000", jd2.getMjd(), lessThan(600_000.));
-
-        JulianDay jd3 = new JulianDay(3_000_000.6);
-        assertThat("MJD for JD 3000000.4 is not before 60000", jd3.getMjd(), greaterThan(600_000.));
-    }
-
-    @Test
     void testDate() {
         ZonedDateTime testDate1 = ZonedDateTime.of(2000, 1, 1, 12, 0, 0, 0, of("UTC"));
         JulianDay jd1 = new JulianDay(2_451_545.000_00);

@@ -1,0 +1,27 @@
+
+name: Publish to maven central
+on:
+  release:
+    types: [created]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Publish package
+        uses: gradle/gradle-build-action@v2.8.1
+        with:
+          arguments: publish
+        env:
+          ossrhUsername: ${{ secrets.OSSRH_USERNAME }}
+          ossrhPassword: ${{ secrets.OSSRH_TOKEN }}
+          ORG_GRADLE_PROJECT_signingKeyId: ${{ secrets PGP_signingKeyId }}
+          ORG_GRADLE_PROJECT_signingKey:  ${{ secrets PGP_signingKey }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets PGP_signingPassword }}
