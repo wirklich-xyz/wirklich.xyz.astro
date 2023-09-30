@@ -26,10 +26,10 @@ class FractionOfDayTest {
     @Test
     void testToFrac() {
         FractionOfDay foc = new FractionOfDay(12,0,0,0);
-        assertThat("Hour of 0.5", foc.getDayFraction(), is(0.5));
+        assertThat("Fraction of 12:00:00", foc.getDayFraction(), is(0.5));
 
         FractionOfDay foc2 = new FractionOfDay(3,22,33,100);
-        assertThat("Hour of 0.5", foc2.getDayFraction(), is((3.+22./60+33./60/60+100./1e9/60/60)/24));
+        assertThat("Fraction of 3:22:33", foc2.getDayFraction(), is((3.+22./60+33./60/60+100./1e9/60/60)/24));
 
     }
 

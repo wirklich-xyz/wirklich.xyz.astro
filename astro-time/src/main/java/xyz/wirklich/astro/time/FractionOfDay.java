@@ -23,7 +23,7 @@ public class FractionOfDay {
     }
 
     public FractionOfDay(int hour, int minute, int second, int nanoSecond) {
-        this.dayFraction = (hour + minute / 60 + second / 60 / 60 + nanoSecond / 60 / 60 / 1e9) / 24;
+        this.dayFraction = ((double)hour + (double)minute / 60 + (double)second / 60 / 60 + (double)nanoSecond / 60 / 60 / 1e9) / 24;
         this.hour = hour;
         this.minute = minute;
         this.second = second;
