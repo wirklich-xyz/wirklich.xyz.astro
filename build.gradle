@@ -1,3 +1,18 @@
+plugins {
+    id "io.github.gradle-nexus.publish-plugin" version "2.0.0-rc-1"
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {  //only for users registered in Sonatype after 24 Feb 2021
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username = "$System.env.ossrhUsername"
+            password = "$System.env.ossrhPassword"
+        }
+    }
+}
+
 String pom_version = '0.0.1-dev'
 if (null != System.getenv('XYZ_WIRKLICH_ASTRO_GITTAG')) {
     pom_version = System.getenv('XYZ_WIRKLICH_ASTRO_GITTAG').trim().replaceFirst("^v", '')
@@ -14,10 +29,10 @@ allprojects {
 
     group 'xyz.wirklich.astro'
     version "${pom_version}"
-    println "pom version: ${pom_version}"
+    println "determined pom version: ${pom_version}"
 
     repositories {
-        mavenCentral()
+      mavenCentral()
     }
 
     java {
@@ -84,6 +99,8 @@ allprojects {
             }
         }
     }
+
+
 
     jar {
         manifest.attributes provider: 'gradle'
