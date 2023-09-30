@@ -24,7 +24,7 @@ import static java.lang.Math.floor;
 
 /**
  * @author Ralf Ulrich
- *
+ * <p>
  * JulianDay as a utility for java.time.
  */
 
@@ -69,22 +69,13 @@ public class JulianDay {
 
         double dayFrac = B - D - floor(30.6001 * E) + F;
         int day = (int) dayFrac;
-
-        double hourInDay = (dayFrac - day) * 24;
-        int hour = (int) floor(hourInDay);
-
-        double minuteInHour = (hourInDay - hour) * 60;
-        int minute = (int) floor(minuteInHour);
-
-        double secondFrac = (minuteInHour - minute) * 60;
-        int second = (int) floor(secondFrac);
-
-        int nano = (int) ((secondFrac - second) * 1e9);
+        FractionOfDay fod = new FractionOfDay(dayFrac - day);
 
         if (E <= 13) {
-            return ZonedDateTime.of(C - 4716, E - 1, day, hour, minute, second, nano, ZoneId.of("UTC+0"));
+            C -= 1;
+            E += 12;
         }
-        return ZonedDateTime.of(C - 4715, E - 13, day, hour, minute, second, nano, ZoneId.of("UTC+0"));
+        return ZonedDateTime.of(C - 4715, E - 13, day, fod.getHour(), fod.getMinute(), fod.getSecond(), fod.getNanoSecond(), ZoneId.of("UTC+0"));
     }
 
     public void setDate(ZonedDateTime date) {
@@ -97,16 +88,11 @@ public class JulianDay {
             month += 12;
         }
         double day = utc.getDayOfMonth();
-
-        double hour = utc.getHour();
-        double minute = utc.getMinute();
-        double second = utc.getSecond();
-        double nano = utc.getNano();
-        double dayFrac = (hour + minute / 60 + second / 60 / 60 + nano / 60 / 60 / 1e9) / 24;
+        FractionOfDay fod = new FractionOfDay(utc.getHour(), utc.getMinute(), utc.getSecond(), utc.getNano());
 
         // this is all for gregorian (modern) calendar
         double B = 2 - floor(year / 100) + floor(year / 400);
-        this.jd = floor(365.25 * (year + 4716)) + floor(30.6001 * (month + 1)) + day + dayFrac + B - 1524.5;
+        this.jd = floor(365.25 * (year + 4716)) + floor(30.6001 * (month + 1)) + day + fod.getDayFraction() + B - 1524.5;
     }
 
     /**
